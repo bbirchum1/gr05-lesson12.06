@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12.06 Independent Practice — Coordinate Graphs</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;color:#f8fafc;line-height:1.5;padding:20px 12px;min-height:100vh}
+.page{max-width:780px;margin:0 auto}
+
+/* Instructions banner */
+.instructions-banner{position:relative;overflow:hidden;background:#1e293b;border:2px solid #38bdf8;border-radius:14px;padding:18px 22px;margin-bottom:24px;animation:pulse-glow 3s ease-in-out 2}
+.instructions-banner::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(56,189,248,.15),transparent);animation:shine 2.5s ease-in-out 1}
+.instructions-banner h2{color:#38bdf8;font-weight:900;font-size:17px;margin-bottom:6px}
+.instructions-banner p{color:#cbd5e1;font-size:14px;margin:3px 0}
+.instructions-banner .highlight{color:#f472b6;font-weight:800}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 0 rgba(56,189,248,0)}50%{box-shadow:0 0 24px rgba(56,189,248,.5)}}
+@keyframes shine{0%{left:-100%}100%{left:160%}}
+
+/* Title */
+h1{color:#38bdf8;font-weight:900;font-size:28px;text-align:center;margin:16px 0 6px;letter-spacing:-.01em}
+.subtitle{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:24px}
+
+/* Sections */
+.section-banner{display:flex;align-items:center;background:#1e293b;border-radius:10px;padding:10px 16px;margin:32px 0 14px}
+.section-banner span{color:#64748b;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+/* Cards */
+.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:22px 24px;margin-bottom:16px}
+.q-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.qbadge{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#38bdf8;color:#0f172a;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center}
+.qbadge.pink{background:#f472b6}
+.qbadge.violet{background:#a78bfa}
+.q-title{flex:1;font-weight:600;font-size:15px;color:#f8fafc;padding-top:4px}
+.q-pts{display:inline-block;margin-left:8px;font-weight:800;font-size:12px;color:#64748b;letter-spacing:.05em}
+
+/* Sub-labels */
+.field-label{font-weight:800;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;display:block}
+
+/* Inputs */
+input[type=text],input[type=number],textarea{background:#0f172a;color:#f8fafc;border:1.5px solid #475569;border-radius:8px;padding:8px 10px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;transition:border-color .15s}
+input[type=text]:focus,input[type=number]:focus,textarea:focus{outline:none;border-color:#38bdf8}
+.input-small{width:90px}
+.input-medium{width:180px}
+.input-wide{width:280px}
+.required-missing{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.25)!important}
+
+/* Q1 blanks inline style */
+.blank-line{line-height:2.2;color:#cbd5e1;font-size:15px}
+.blank-line input{margin:0 4px}
+
+/* Q2 rows */
+.coord-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+.coord-row .letter{font-weight:900;color:#38bdf8;font-size:17px;width:22px;text-align:center}
+
+/* Radio group */
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;cursor:pointer;transition:border-color .15s}
+.radio-item:hover{border-color:#475569}
+.radio-item input[type=radio]{accent-color:#38bdf8;cursor:pointer;width:16px;height:16px}
+.radio-item label{cursor:pointer;flex:1;font-weight:600;font-size:14px;color:#cbd5e1}
+
+/* Buttons */
+.btn{display:inline-block;padding:12px 22px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:transform .1s,box-shadow .15s;color:#0f172a}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.btn:active{transform:translateY(0)}
+.btn-sky{background:#38bdf8}
+.btn-green{background:#059669;color:#f0fdf4}
+.btn-pink{background:#f472b6}
+.btn-sm{padding:7px 13px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Graph wrapper */
+.graph-wrap{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;margin:12px 0;text-align:center}
+.graph-wrap canvas{display:block;margin:0 auto;cursor:crosshair;touch-action:none;border-radius:4px;max-width:100%;height:auto}
+.graph-wrap canvas.locked{cursor:default}
+.target-prompt{font-weight:700;font-size:14px;color:#f472b6;background:#1e293b;border-left:3px solid #f472b6;border-radius:6px;padding:9px 12px;margin-bottom:10px;text-align:left}
+.target-prompt.done{color:#10b981;border-left-color:#10b981}
+.target-prompt.placed{color:#cbd5e1;border-left-color:#64748b;font-weight:600}
+.target-prompt.reference{color:#38bdf8;border-left-color:#38bdf8;font-weight:600;font-size:13px}
+.graph-actions{margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.progress-info{font-size:12px;color:#64748b;font-weight:700;margin-top:8px}
+
+/* Work area */
+.work-section{margin-top:14px;background:#0f172a;border:1px solid #334155;border-radius:10px;overflow:hidden}
+.work-header{padding:10px 14px;cursor:pointer;user-select:none;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#94a3b8}
+.work-header:hover{background:#1e293b}
+.work-header .arrow{transition:transform .2s}
+.work-header.open .arrow{transform:rotate(90deg)}
+.work-body{display:none;padding:10px 14px 14px;border-top:1px solid #334155}
+.work-body.open{display:block}
+.work-toggle{display:flex;gap:6px;margin-bottom:10px}
+.work-toggle button{flex:1;padding:6px 10px;background:#1e293b;color:#94a3b8;border:1.5px solid #334155;border-radius:6px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .15s}
+.work-toggle button.active{background:#38bdf8;color:#0f172a;border-color:#38bdf8}
+.work-body textarea{width:100%;min-height:80px;resize:vertical}
+.work-body canvas{display:block;width:100%;max-width:720px;height:160px;background:#0f172a;border:1px solid #334155;border-radius:6px;cursor:crosshair;touch-action:none}
+
+/* Validation */
+.validation-message{background:#450a0a;color:#fca5a5;border:1.5px solid #ef4444;border-radius:10px;padding:12px 16px;margin:16px 0;font-weight:700;font-size:14px;text-align:center;display:none}
+.validation-message.show{display:block}
+
+/* Results */
+#results-section{display:none;margin-top:28px}
+.score-banner{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:22px;margin-bottom:18px;text-align:center}
+.score-big{font-size:34px;font-weight:900;color:#38bdf8;margin-bottom:6px}
+.score-pct{font-size:14px;color:#94a3b8;margin-bottom:14px}
+#results-breakdown{background:#1e293b;border:1px solid #334155;border-radius:14px;overflow:hidden}
+.result-q-header{padding:10px 16px;background:#0f172a;font-weight:900;font-size:14px;color:#38bdf8;border-bottom:1px solid #334155}
+.result-item{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px;border-bottom:1px solid #334155;gap:12px}
+.result-item:last-child{border-bottom:none}
+.result-item.r-correct{background:#064e3b}
+.result-item.r-incorrect{background:#450a0a}
+.result-item.r-partial{background:#451a03}
+.result-item strong{color:#f8fafc;font-weight:800;font-size:13px}
+.result-item small{color:#cbd5e1;font-weight:600;font-size:12px}
+.status-label{display:inline-block;padding:4px 10px;border-radius:6px;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.label-correct{background:#10b981;color:#0f172a}
+.label-incorrect{background:#ef4444;color:#fff}
+.label-partial{background:#f59e0b;color:#0f172a}
+
+/* Celebration */
+.celebration{position:fixed;top:20%;left:50%;transform:translateX(-50%);font-size:80px;pointer-events:none;z-index:9999;animation:celebrationBounce 3s ease-out forwards}
+@keyframes celebrationBounce{0%{transform:translateX(-50%) translateY(0) scale(0);opacity:0}20%{transform:translateX(-50%) translateY(-20px) scale(1.2);opacity:1}50%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}100%{transform:translateX(-50%) translateY(-200px) scale(.8);opacity:0}}
+
+/* Coord row for Q2 */
+.prefix-letter{color:#38bdf8;font-weight:900;font-size:18px;margin-right:6px;width:18px;display:inline-block;text-align:center}
+
+/* Utility spacing */
+.mb-8{margin-bottom:8px}
+.mt-10{margin-top:10px}
+.mt-14{margin-top:14px}
+.mt-16{margin-top:16px}
+
+/* Reference graph description */
+.ref-points-list{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#cbd5e1;font-weight:600}
+.ref-points-list strong{color:#38bdf8;font-weight:900;margin-right:4px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Instructions banner -->
+<div class="instructions-banner">
+  <h2>📋 Submission Instructions</h2>
+  <p>You have <span class="highlight">unlimited tries</span> on this assignment — keep trying until you're happy with your score!</p>
+  <p>When you achieve the score you want, <span class="highlight">download your report</span> using the pink button that appears after you submit.</p>
+  <p>Then <span class="highlight">submit the PDF file to Canvas</span>.</p>
+</div>
+
+<h1>Lesson 12.06 Independent Practice</h1>
+<p class="subtitle">Coordinate Graphs · Total: 44 points</p>
+
+<!-- ============================================ -->
+<!-- Section 1: Reading Coordinates (Q1-Q3) -->
+<!-- ============================================ -->
+<div class="section-banner">
+  <span>📍 Section 1 — Reading Coordinates &nbsp;|&nbsp; Questions 1-3</span>
+</div>
+
+<!-- Reference graph card -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge" style="background:#64748b">📊</span>
+    <div class="q-title">
+      Reference Graph — Use this graph to answer Questions 1, 2, and 3.
+    </div>
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt reference">
+      📌 The graph below shows six labeled points: <strong style="color:#38bdf8">M</strong>, N, P, O, Q, and R.
+    </div>
+    <canvas id="canvas-ref" width="460" height="460"></canvas>
+  </div>
+</div>
+
+<!-- Q1 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge">1</span>
+    <div class="q-title">
+      Fill in the blanks to answer the questions about point M. Point M has the coordinates (5, 8).
+      <span class="q-pts">4 pts</span>
+    </div>
+  </div>
+  <div class="blank-line">
+    This means its position is
+    <input type="text" class="input-small" id="q1a" placeholder="?">
+    units to the right and
+    <input type="text" class="input-small" id="q1b" placeholder="?">
+    units up from the origin.
+  </div>
+  <div class="blank-line" style="margin-top:14px">
+    Point <input type="text" class="input-small" id="q1c" placeholder="?" style="width:70px">
+    is located at the origin with coordinates
+    <input type="text" class="input-medium" id="q1d" placeholder="(?, ?)" style="width:120px">.
+  </div>
+  <div id="q1-work-container"></div>
+</div>
+
+<!-- Q2 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge">2</span>
+    <div class="q-title">
+      Write the coordinates of each of the following points using the graph above.
+      <span class="q-pts">4 pts</span>
+    </div>
+  </div>
+  <div class="coord-row">
+    <span class="letter">N</span>
+    <input type="text" class="input-medium" id="q2n" placeholder="(x, y)">
+  </div>
+  <div class="coord-row">
+    <span class="letter">P</span>
+    <input type="text" class="input-medium" id="q2p" placeholder="(x, y)">
+  </div>
+  <div class="coord-row">
+    <span class="letter">Q</span>
+    <input type="text" class="input-medium" id="q2q" placeholder="(x, y)">
+  </div>
+  <div class="coord-row">
+    <span class="letter">R</span>
+    <input type="text" class="input-medium" id="q2r" placeholder="(x, y)">
+  </div>
+  <div id="q2-work-container"></div>
+</div>
+
+<!-- Q3 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">3</span>
+    <div class="q-title">
+      Plot and label the following points on the graph. Click on the graph at each point's location.
+      <span class="q-pts">4 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    W (10, 2) &nbsp;·&nbsp; X (0, 3) &nbsp;·&nbsp; Y (3, 5) &nbsp;·&nbsp; Z (5, 3)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q3">✏️ Click on the graph to plot point <strong>W</strong> at (10, 2)</div>
+    <canvas id="canvas-q3" width="460" height="460"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q3')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q3')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q3">Plotted: 0 / 4</div>
+  </div>
+  <div id="q3-work-container"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- Section 2: Plotting Shapes (Q4-Q8) -->
+<!-- ============================================ -->
+<div class="section-banner">
+  <span>📐 Section 2 — Plotting Shapes &nbsp;|&nbsp; Questions 4-8</span>
+</div>
+
+<!-- Q4 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">4</span>
+    <div class="q-title">
+      Plot the set of points on the coordinate plane. Join the points in order with straight lines and back to the first point. Label the geometrical shape, being as specific as possible.
+      <span class="q-pts">4 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (3, 3) &nbsp;·&nbsp; (6, 3) &nbsp;·&nbsp; (3, 7)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q4">✏️ Click on the graph to plot point <strong>1</strong> at (3, 3)</div>
+    <canvas id="canvas-q4" width="520" height="520"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q4')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q4')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q4">Plotted: 0 / 3</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Shape name (be specific)</label>
+    <input type="text" class="input-wide" id="q4-shape" placeholder="Type the name of the shape...">
+  </div>
+  <div id="q4-work-container"></div>
+</div>
+
+<!-- Q5 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">5</span>
+    <div class="q-title">
+      Plot the set of points on the coordinate plane. Join the points in order with straight lines and back to the first point. Label the geometrical shape, being as specific as possible.
+      <span class="q-pts">5 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (7, 16) &nbsp;·&nbsp; (13, 16) &nbsp;·&nbsp; (13, 19) &nbsp;·&nbsp; (7, 19)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q5">✏️ Click on the graph to plot point <strong>1</strong> at (7, 16)</div>
+    <canvas id="canvas-q5" width="520" height="520"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q5')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q5')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q5">Plotted: 0 / 4</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Shape name (be specific)</label>
+    <input type="text" class="input-wide" id="q5-shape" placeholder="Type the name of the shape...">
+  </div>
+  <div id="q5-work-container"></div>
+</div>
+
+<!-- Q6 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">6</span>
+    <div class="q-title">
+      Plot the set of points on the coordinate plane. Join the points in order with straight lines and back to the first point. Label the geometrical shape, being as specific as possible.
+      <span class="q-pts">5 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (4, 9) &nbsp;·&nbsp; (2, 12) &nbsp;·&nbsp; (8, 12) &nbsp;·&nbsp; (10, 9)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q6">✏️ Click on the graph to plot point <strong>1</strong> at (4, 9)</div>
+    <canvas id="canvas-q6" width="520" height="520"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q6')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q6')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q6">Plotted: 0 / 4</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Shape name (be specific)</label>
+    <input type="text" class="input-wide" id="q6-shape" placeholder="Type the name of the shape...">
+  </div>
+  <div id="q6-work-container"></div>
+</div>
+
+<!-- Q7 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">7</span>
+    <div class="q-title">
+      Plot the set of points on the coordinate plane. Join the points in order with straight lines and back to the first point. Label the geometrical shape, being as specific as possible.
+      <span class="q-pts">5 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (19, 8) &nbsp;·&nbsp; (19, 11) &nbsp;·&nbsp; (12, 11) &nbsp;·&nbsp; (14, 8)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q7">✏️ Click on the graph to plot point <strong>1</strong> at (19, 8)</div>
+    <canvas id="canvas-q7" width="520" height="520"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q7')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q7')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q7">Plotted: 0 / 4</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Shape name (be specific)</label>
+    <input type="text" class="input-wide" id="q7-shape" placeholder="Type the name of the shape...">
+  </div>
+  <div id="q7-work-container"></div>
+</div>
+
+<!-- Q8 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge pink">8</span>
+    <div class="q-title">
+      Plot the set of points on the coordinate plane. Join the points in order with straight lines and back to the first point. Label the geometrical shape, being as specific as possible.
+      <span class="q-pts">5 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (15, 15) &nbsp;·&nbsp; (18, 14) &nbsp;·&nbsp; (19, 17) &nbsp;·&nbsp; (16, 18)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q8">✏️ Click on the graph to plot point <strong>1</strong> at (15, 15)</div>
+    <canvas id="canvas-q8" width="520" height="520"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q8')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q8')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q8">Plotted: 0 / 4</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Shape name (be specific)</label>
+    <input type="text" class="input-wide" id="q8-shape" placeholder="Type the name of the shape...">
+  </div>
+  <div id="q8-work-container"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- Section 3: Problem Solving (Q9-Q10) -->
+<!-- ============================================ -->
+<div class="section-banner">
+  <span>🔍 Section 3 — Problem Solving &nbsp;|&nbsp; Questions 9-10</span>
+</div>
+
+<!-- Q9 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge violet">9</span>
+    <div class="q-title">
+      Three of the vertices of a rectangle drawn on a coordinate grid are at (4, 2), (4, 10), and (10, 10). What are the coordinates of the fourth vertex?
+      <span class="q-pts">1 pt</span>
+    </div>
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt reference">📌 The three known vertices are shown below. Use the graph to help find the fourth.</div>
+    <canvas id="canvas-q9" width="460" height="460"></canvas>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Fourth vertex coordinates</label>
+    <input type="text" class="input-medium" id="q9-answer" placeholder="(x, y)">
+  </div>
+  <div id="q9-work-container"></div>
+</div>
+
+<!-- Q10 -->
+<div class="card">
+  <div class="q-header">
+    <span class="qbadge violet">10</span>
+    <div class="q-title">
+      Plot the following points. Do they all lie on a straight line?
+      <span class="q-pts">7 pts</span>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-left:3px solid #f472b6;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:14px;font-weight:700;color:#f472b6">
+    (2, 0) &nbsp;·&nbsp; (3, 2) &nbsp;·&nbsp; (4, 4) &nbsp;·&nbsp; (5, 6) &nbsp;·&nbsp; (6, 8) &nbsp;·&nbsp; (7, 10)
+  </div>
+  <div class="graph-wrap">
+    <div class="target-prompt" id="prompt-q10">✏️ Click on the graph to plot point <strong>1</strong> at (2, 0)</div>
+    <canvas id="canvas-q10" width="460" height="460"></canvas>
+    <div class="graph-actions">
+      <button type="button" class="btn btn-green btn-sm" onclick="undoLastPoint('q10')">↶ Undo Last</button>
+      <button type="button" class="btn btn-green btn-sm" onclick="clearGraph('q10')">🗑 Clear All</button>
+    </div>
+    <div class="progress-info" id="progress-q10">Plotted: 0 / 6</div>
+  </div>
+  <div class="mt-14">
+    <label class="field-label">Do all the points lie on a straight line?</label>
+    <div class="radio-group">
+      <div class="radio-item">
+        <input type="radio" name="q10" value="yes" id="q10yes">
+        <label for="q10yes">Yes, they all lie on a straight line</label>
+      </div>
+      <div class="radio-item">
+        <input type="radio" name="q10" value="no" id="q10no">
+        <label for="q10no">No, they do not all lie on a straight line</label>
+      </div>
+    </div>
+  </div>
+  <div id="q10-work-container"></div>
+</div>
+
+<!-- Validation message -->
+<div id="validation-message" class="validation-message"></div>
+
+<!-- Submit / Try again buttons -->
+<div style="text-align:center;margin:32px 0">
+  <button id="submit-btn" class="btn btn-sky" onclick="submitAll()">📝 Check My Work</button>
+  <button id="try-again-btn" class="btn btn-green" onclick="tryAgain()" style="display:none">🔄 Try Again</button>
+</div>
+
+<!-- Results section -->
+<div id="results-section">
+  <div class="score-banner">
+    <div class="score-big" id="final-score">0 / 44</div>
+    <div class="score-pct" id="final-pct">0%</div>
+    <button class="btn btn-pink" onclick="generatePDF()">📄 Download Report PDF</button>
+  </div>
+  <div id="results-breakdown"></div>
+</div>
+
+</div>
+<script>
+'use strict';
+const DPR = window.devicePixelRatio || 1;
+let isLocked = false;
+let lastGradeResults = null;
+const workAreas = {};
+
+// =======================================================
+// GRAPH DATA — each entry is a 2D coordinate plane config
+// =======================================================
+const gridData = {
+  // Reference graph (for Q1/Q2) - shows M, N, P, O, Q, R
+  ref: {
+    xMin:0, xMax:10, yMin:0, yMax:10,
+    preplotted: [
+      {x:5, y:8, label:'M'},
+      {x:2, y:8, label:'N'},
+      {x:0, y:6, label:'P'},
+      {x:0, y:0, label:'O'},
+      {x:6, y:0, label:'Q'},
+      {x:8, y:5, label:'R'}
+    ],
+    targets: [],
+    studentPoints: [],
+    currentIdx: 0,
+    connect: false,
+    interactive: false,
+    logicalW:460, logicalH:460
+  },
+  // Q3 - student plots W, X, Y, Z on same grid (pre-plotted = M,N,P,O,Q,R)
+  q3: {
+    xMin:0, xMax:10, yMin:0, yMax:10,
+    preplotted: [
+      {x:5, y:8, label:'M'},
+      {x:2, y:8, label:'N'},
+      {x:0, y:6, label:'P'},
+      {x:0, y:0, label:'O'},
+      {x:6, y:0, label:'Q'},
+      {x:8, y:5, label:'R'}
+    ],
+    targets: [
+      {x:10, y:2, label:'W'},
+      {x:0,  y:3, label:'X'},
+      {x:3,  y:5, label:'Y'},
+      {x:5,  y:3, label:'Z'}
+    ],
+    studentPoints: [],
+    currentIdx: 0,
+    connect: false,
+    interactive: true,
+    logicalW:460, logicalH:460
+  },
+  // Q4 - triangle (3,3),(6,3),(3,7)
+  q4: {
+    xMin:0, xMax:20, yMin:0, yMax:20,
+    preplotted: [],
+    targets: [
+      {x:3, y:3, label:'1'},
+      {x:6, y:3, label:'2'},
+      {x:3, y:7, label:'3'}
+    ],
+    studentPoints: [], currentIdx:0, connect:true, interactive:true,
+    logicalW:520, logicalH:520
+  },
+  // Q5 - rectangle (7,16),(13,16),(13,19),(7,19)
+  q5: {
+    xMin:0, xMax:20, yMin:0, yMax:20,
+    preplotted: [],
+    targets: [
+      {x:7,  y:16, label:'1'},
+      {x:13, y:16, label:'2'},
+      {x:13, y:19, label:'3'},
+      {x:7,  y:19, label:'4'}
+    ],
+    studentPoints: [], currentIdx:0, connect:true, interactive:true,
+    logicalW:520, logicalH:520
+  },
+  // Q6 - parallelogram (4,9),(2,12),(8,12),(10,9)
+  q6: {
+    xMin:0, xMax:20, yMin:0, yMax:20,
+    preplotted: [],
+    targets: [
+      {x:4,  y:9,  label:'1'},
+      {x:2,  y:12, label:'2'},
+      {x:8,  y:12, label:'3'},
+      {x:10, y:9,  label:'4'}
+    ],
+    studentPoints: [], currentIdx:0, connect:true, interactive:true,
+    logicalW:520, logicalH:520
+  },
+  // Q7 - trapezoid (19,8),(19,11),(12,11),(14,8)
+  q7: {
+    xMin:0, xMax:20, yMin:0, yMax:20,
+    preplotted: [],
+    targets: [
+      {x:19, y:8,  label:'1'},
+      {x:19, y:11, label:'2'},
+      {x:12, y:11, label:'3'},
+      {x:14, y:8,  label:'4'}
+    ],
+    studentPoints: [], currentIdx:0, connect:true, interactive:true,
+    logicalW:520, logicalH:520
+  },
+  // Q8 - square (15,15),(18,14),(19,17),(16,18)
+  q8: {
+    xMin:0, xMax:20, yMin:0, yMax:20,
+    preplotted: [],
+    targets: [
+      {x:15, y:15, label:'1'},
+      {x:18, y:14, label:'2'},
+      {x:19, y:17, label:'3'},
+      {x:16, y:18, label:'4'}
+    ],
+    studentPoints: [], currentIdx:0, connect:true, interactive:true,
+    logicalW:520, logicalH:520
+  },
+  // Q9 - rectangle visual (3 vertices shown)
+  q9: {
+    xMin:0, xMax:10, yMin:0, yMax:10,
+    preplotted: [
+      {x:4,  y:2,  label:'A'},
+      {x:4,  y:10, label:'B'},
+      {x:10, y:10, label:'C'}
+    ],
+    targets: [],
+    studentPoints: [],
+    currentIdx: 0,
+    connect: false,
+    interactive: false,
+    // Draw dashed lines between known vertices
+    preLines: [[0,1],[1,2]],
+    logicalW:460, logicalH:460
+  },
+  // Q10 - 6 points, plot and check collinearity
+  q10: {
+    xMin:0, xMax:10, yMin:0, yMax:10,
+    preplotted: [],
+    targets: [
+      {x:2, y:0,  label:'1'},
+      {x:3, y:2,  label:'2'},
+      {x:4, y:4,  label:'3'},
+      {x:5, y:6,  label:'4'},
+      {x:6, y:8,  label:'5'},
+      {x:7, y:10, label:'6'}
+    ],
+    studentPoints: [], currentIdx:0, connect:false, interactive:true,
+    logicalW:460, logicalH:460
+  }
+};
+
+// =======================================================
+// HI-DPI CANVAS SETUP + GEOMETRY
+// =======================================================
+function setupHiDPICanvas(el, w, h){
+  el.width = w * DPR;
+  el.height = h * DPR;
+  el.style.width = w + 'px';
+  el.style.height = h + 'px';
+  const ctx = el.getContext('2d');
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return ctx;
+}
+
+function getGeom(graphId){
+  const d = gridData[graphId];
+  return {
+    w: d.logicalW,
+    h: d.logicalH,
+    padL: 52, padR: 26, padT: 24, padB: 60,
+    pw: d.logicalW - 78,
+    ph: d.logicalH - 84
+  };
+}
+
+function gridToCanvas(graphId, x, y){
+  const d = gridData[graphId];
+  const g = getGeom(graphId);
+  const xStep = g.pw / (d.xMax - d.xMin);
+  const yStep = g.ph / (d.yMax - d.yMin);
+  return {
+    px: g.padL + (x - d.xMin) * xStep,
+    py: g.padT + g.ph - (y - d.yMin) * yStep
+  };
+}
+
+function canvasToGrid(graphId, px, py){
+  const d = gridData[graphId];
+  const g = getGeom(graphId);
+  const xStep = g.pw / (d.xMax - d.xMin);
+  const yStep = g.ph / (d.yMax - d.yMin);
+  return {
+    x: d.xMin + (px - g.padL) / xStep,
+    y: d.yMin + (g.padT + g.ph - py) / yStep
+  };
+}
+
+// =======================================================
+// DRAW COORDINATE GRAPH
+// =======================================================
+function drawCoordGraph(graphId){
+  const d = gridData[graphId];
+  const canvas = document.getElementById('canvas-' + graphId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const g = getGeom(graphId);
+
+  // Background
+  ctx.clearRect(0, 0, g.w, g.h);
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, g.w, g.h);
+
+  const xRange = d.xMax - d.xMin;
+  const yRange = d.yMax - d.yMin;
+  const xStep = g.pw / xRange;
+  const yStep = g.ph / yRange;
+
+  // Minor grid lines (every 1 unit)
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  for (let x = d.xMin; x <= d.xMax; x++){
+    const px = g.padL + (x - d.xMin) * xStep;
+    ctx.beginPath();
+    ctx.moveTo(px, g.padT);
+    ctx.lineTo(px, g.padT + g.ph);
+    ctx.stroke();
+  }
+  for (let y = d.yMin; y <= d.yMax; y++){
+    const py = g.padT + g.ph - (y - d.yMin) * yStep;
+    ctx.beginPath();
+    ctx.moveTo(g.padL, py);
+    ctx.lineTo(g.padL + g.pw, py);
+    ctx.stroke();
+  }
+
+  // Major axes
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(g.padL, g.padT);
+  ctx.lineTo(g.padL, g.padT + g.ph);
+  ctx.lineTo(g.padL + g.pw, g.padT + g.ph);
+  ctx.stroke();
+
+  // Tick labels
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '700 11px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const xStride = xRange > 12 ? 1 : 1;
+  for (let x = d.xMin; x <= d.xMax; x += xStride){
+    const px = g.padL + (x - d.xMin) * xStep;
+    ctx.fillText(x, px, g.padT + g.ph + 6);
+  }
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  const yStride = yRange > 12 ? 1 : 1;
+  for (let y = d.yMin; y <= d.yMax; y += yStride){
+    const py = g.padT + g.ph - (y - d.yMin) * yStep;
+    ctx.fillText(y, g.padL - 6, py);
+  }
+
+  // Axis labels
+  ctx.fillStyle = '#cbd5e1';
+  ctx.font = '800 13px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Horizontal Axis', g.padL + g.pw / 2, g.padT + g.ph + 30);
+  ctx.save();
+  ctx.translate(14, g.padT + g.ph / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textBaseline = 'top';
+  ctx.fillText('Vertical Axis', 0, 0);
+  ctx.restore();
+
+  // Pre-lines (for Q9 — dashed lines between pre-plotted points)
+  if (d.preLines && d.preplotted){
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 5]);
+    d.preLines.forEach(([i, j]) => {
+      const a = gridToCanvas(graphId, d.preplotted[i].x, d.preplotted[i].y);
+      const b = gridToCanvas(graphId, d.preplotted[j].x, d.preplotted[j].y);
+      ctx.beginPath();
+      ctx.moveTo(a.px, a.py);
+      ctx.lineTo(b.px, b.py);
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+  }
+
+  // Student connecting lines
+  if (d.connect && d.studentPoints.length >= 2){
+    ctx.strokeStyle = '#f472b6';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    d.studentPoints.forEach((p, i) => {
+      const c = gridToCanvas(graphId, p.x, p.y);
+      if (i === 0) ctx.moveTo(c.px, c.py);
+      else ctx.lineTo(c.px, c.py);
+    });
+    // Close shape if all points plotted
+    if (d.studentPoints.length === d.targets.length && d.targets.length >= 3){
+      const first = gridToCanvas(graphId, d.studentPoints[0].x, d.studentPoints[0].y);
+      ctx.lineTo(first.px, first.py);
+    }
+    ctx.stroke();
+  }
+
+  // Pre-plotted points (sky)
+  d.preplotted.forEach(p => {
+    const c = gridToCanvas(graphId, p.x, p.y);
+    ctx.fillStyle = '#38bdf8';
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(c.px, c.py, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = '900 14px Nunito, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(p.label, c.px + 8, c.py - 6);
+  });
+
+  // Student-plotted points (pink)
+  d.studentPoints.forEach(p => {
+    const c = gridToCanvas(graphId, p.x, p.y);
+    ctx.fillStyle = '#f472b6';
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(c.px, c.py, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#f472b6';
+    ctx.font = '900 14px Nunito, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(p.label, c.px + 8, c.py - 6);
+  });
+}
+
+// =======================================================
+// INTERACTION: click, undo, clear
+// =======================================================
+function handleCoordClick(e, graphId){
+  if (isLocked) return;
+  const d = gridData[graphId];
+  if (!d.interactive) return;
+  if (d.currentIdx >= d.targets.length) return;
+
+  const canvas = e.currentTarget;
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.clientX - rect.left) * (d.logicalW / rect.width);
+  const cy = (e.clientY - rect.top) * (d.logicalH / rect.height);
+  const grid = canvasToGrid(graphId, cx, cy);
+
+  // Snap to nearest integer and clamp
+  let snapX = Math.round(grid.x);
+  let snapY = Math.round(grid.y);
+  if (snapX < d.xMin || snapX > d.xMax) return;
+  if (snapY < d.yMin || snapY > d.yMax) return;
+
+  const target = d.targets[d.currentIdx];
+  d.studentPoints.push({x: snapX, y: snapY, label: target.label, targetIdx: d.currentIdx});
+  d.currentIdx++;
+  drawCoordGraph(graphId);
+  updatePromptAndProgress(graphId);
+}
+
+function undoLastPoint(graphId){
+  if (isLocked) return;
+  const d = gridData[graphId];
+  if (d.studentPoints.length === 0) return;
+  d.studentPoints.pop();
+  d.currentIdx = d.studentPoints.length;
+  drawCoordGraph(graphId);
+  updatePromptAndProgress(graphId);
+}
+
+function clearGraph(graphId){
+  if (isLocked) return;
+  const d = gridData[graphId];
+  d.studentPoints = [];
+  d.currentIdx = 0;
+  drawCoordGraph(graphId);
+  updatePromptAndProgress(graphId);
+}
+
+function updatePromptAndProgress(graphId){
+  const d = gridData[graphId];
+  if (!d.interactive) return;
+  const prompt = document.getElementById('prompt-' + graphId);
+  const progress = document.getElementById('progress-' + graphId);
+
+  // Clear any red validation outline as soon as the student starts/continues plotting
+  if (prompt) prompt.style.outline = '';
+
+  if (prompt){
+    if (d.currentIdx >= d.targets.length){
+      prompt.classList.remove('done');
+      prompt.classList.add('placed');
+      prompt.innerHTML = '📍 All ' + d.targets.length + ' points placed. Your plotting will be graded on accuracy — use <strong>Undo</strong> to adjust any point before submitting.';
+    } else {
+      prompt.classList.remove('done');
+      prompt.classList.remove('placed');
+      const t = d.targets[d.currentIdx];
+      prompt.innerHTML = '✏️ Click on the graph to plot point <strong>' + t.label + '</strong> at (' + t.x + ', ' + t.y + ')';
+    }
+  }
+  if (progress){
+    progress.textContent = 'Plotted: ' + d.studentPoints.length + ' / ' + d.targets.length;
+  }
+}
+
+function initCanvasEvents(graphId){
+  const canvas = document.getElementById('canvas-' + graphId);
+  if (!canvas) return;
+  const d = gridData[graphId];
+  if (d.interactive){
+    canvas.addEventListener('click', (e) => handleCoordClick(e, graphId));
+  } else {
+    canvas.style.cursor = 'default';
+  }
+}
+
+// =======================================================
+// WORK AREA (optional "show your work" section per question)
+// =======================================================
+function makeWorkArea(containerId, qKey, labelText){
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  labelText = labelText || '✏️ Show your work (optional)';
+  const workId = 'work-' + qKey;
+  container.innerHTML = `
+    <div class="work-section" id="${workId}-section">
+      <div class="work-header" onclick="toggleWorkSection('${workId}')">
+        <span class="arrow">▶</span>
+        <span class="title">${labelText}</span>
+      </div>
+      <div class="work-body" id="${workId}-body">
+        <div class="work-toggle">
+          <button class="active" onclick="setWorkMode('${workId}','type')">✏️ Type</button>
+          <button onclick="setWorkMode('${workId}','draw')">✍️ Draw</button>
+        </div>
+        <div id="${workId}-type-area">
+          <textarea id="${workId}-text" placeholder="Show your thinking here..."></textarea>
+        </div>
+        <div id="${workId}-draw-area" style="display:none">
+          <canvas id="${workId}-canvas" width="720" height="160"></canvas>
+          <div style="margin-top:8px"><button class="btn btn-green btn-sm" onclick="clearDraw('${workId}')">🗑 Clear Drawing</button></div>
+        </div>
+      </div>
+    </div>
+  `;
+  workAreas[workId] = { mode: 'type', imageData: null };
+}
+
+function toggleWorkSection(workId){
+  const section = document.getElementById(workId + '-section');
+  const header = section.querySelector('.work-header');
+  const body = document.getElementById(workId + '-body');
+  const opening = !body.classList.contains('open');
+  body.classList.toggle('open');
+  header.classList.toggle('open');
+  if (opening && !workAreas[workId].drawInited){
+    // Lazy-init draw canvas when first opened
+    initDrawCanvas(workId);
+    workAreas[workId].drawInited = true;
+  }
+}
+
+function setWorkMode(workId, mode){
+  if (isLocked) return;
+  const typeArea = document.getElementById(workId + '-type-area');
+  const drawArea = document.getElementById(workId + '-draw-area');
+  const buttons = document.querySelectorAll('#' + workId + '-body .work-toggle button');
+  workAreas[workId].mode = mode;
+  if (mode === 'type'){
+    typeArea.style.display = 'block';
+    drawArea.style.display = 'none';
+    buttons[0].classList.add('active');
+    buttons[1].classList.remove('active');
+  } else {
+    typeArea.style.display = 'none';
+    drawArea.style.display = 'block';
+    buttons[0].classList.remove('active');
+    buttons[1].classList.add('active');
+    if (!workAreas[workId].drawInited){
+      initDrawCanvas(workId);
+      workAreas[workId].drawInited = true;
+    }
+  }
+}
+
+function initDrawCanvas(workId){
+  const canvas = document.getElementById(workId + '-canvas');
+  if (!canvas) return;
+  const w = 720, h = 160;
+  canvas.width = w * DPR;
+  canvas.height = h * DPR;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  // Background + faint lines
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  for (let y = 20; y < h; y += 24){
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+  }
+  let drawing = false, lastX = 0, lastY = 0;
+  function pos(e){
+    const rect = canvas.getBoundingClientRect();
+    const evt = e.touches ? e.touches[0] : e;
+    return { x: (evt.clientX - rect.left) * (w / rect.width),
+             y: (evt.clientY - rect.top) * (h / rect.height) };
+  }
+  function start(e){
+    if (isLocked) return;
+    e.preventDefault();
+    drawing = true;
+    const p = pos(e);
+    lastX = p.x; lastY = p.y;
+  }
+  function move(e){
+    if (!drawing || isLocked) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.strokeStyle = '#f8fafc';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    lastX = p.x; lastY = p.y;
+  }
+  function end(){ drawing = false; }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end);
+}
+
+function clearDraw(workId){
+  if (isLocked) return;
+  workAreas[workId].drawInited = false;
+  initDrawCanvas(workId);
+  workAreas[workId].drawInited = true;
+}
+
+function getWorkSummary(workId){
+  const text = (document.getElementById(workId + '-text') || {value:''}).value.trim();
+  const canvas = document.getElementById(workId + '-canvas');
+  let imageData = null;
+  let hasDrawing = false;
+  if (canvas && workAreas[workId] && workAreas[workId].drawInited){
+    const ctx = canvas.getContext('2d');
+    const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // Look for any bright pixel (drawn stroke)
+    for (let i = 0; i < img.data.length; i += 40){
+      const r = img.data[i], g = img.data[i+1], b = img.data[i+2];
+      if (r > 200 && g > 200 && b > 200){ hasDrawing = true; break; }
+    }
+    if (hasDrawing) imageData = canvas.toDataURL('image/png');
+  }
+  return {
+    hasWork: !!text || hasDrawing,
+    text: text,
+    imageData: imageData,
+    mode: workAreas[workId] ? workAreas[workId].mode : 'type'
+  };
+}
+
+// =======================================================
+// INPUT HELPERS
+// =======================================================
+function gs(id){ const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function getRadio(name){
+  const r = document.querySelector('input[name="' + name + '"]:checked');
+  return r ? r.value : '';
+}
+function hasRelevantContent(s){ return s.replace(/[^a-zA-Z]/g, '').length >= 3; }
+
+// Parse an int from a string (allow "5", "5 ", "+5", reject "abc" etc.)
+function parseIntLoose(s){
+  if (!s) return null;
+  const m = s.trim().match(/^-?\d+$/);
+  return m ? parseInt(m[0], 10) : null;
+}
+
+// Parse coordinate pair like "(5, 8)", "5,8", "5 8", "(0,0)"
+function parseCoords(s){
+  if (!s) return null;
+  const m = s.match(/-?\d+/g);
+  if (!m || m.length < 2) return null;
+  return { x: parseInt(m[0], 10), y: parseInt(m[1], 10) };
+}
+
+// Normalize shape names — strip punctuation, lowercase, strip common prefixes/suffixes
+function normShape(s){
+  if (!s) return '';
+  let t = s.toLowerCase().trim();
+  t = t.replace(/[.!,;:]/g, '');
+  t = t.replace(/^(a |an |the |it is a |it's a |this is a )/, '');
+  return t.trim();
+}
+
+// =======================================================
+// GRADING FUNCTIONS
+// =======================================================
+function gradeQ1(){
+  // 4 sub-parts: 5 (right), 8 (up), O (point), (0,0)
+  const subQuestions = [];
+  let earned = 0;
+  const subs = [
+    { id:'1A', label:'Units to the right from origin',
+      student: gs('q1a'), correct:'5', check:s => parseIntLoose(s) === 5 },
+    { id:'1B', label:'Units up from origin',
+      student: gs('q1b'), correct:'8', check:s => parseIntLoose(s) === 8 },
+    { id:'1C', label:'Point located at the origin',
+      student: gs('q1c'), correct:'O',
+      check:s => s.trim().toUpperCase() === 'O' || s.trim() === '0' },
+    { id:'1D', label:'Coordinates of the origin',
+      student: gs('q1d'), correct:'(0, 0)',
+      check:s => { const c = parseCoords(s); return c && c.x === 0 && c.y === 0; } }
+  ];
+  subs.forEach(sub => {
+    const ok = sub.check(sub.student);
+    if (ok) earned++;
+    subQuestions.push({ id: sub.id, title: sub.label, earned: ok ? 1 : 0, total: 1,
+      student: sub.student || '(blank)', correct: sub.correct });
+  });
+  return { earned, total: 4, subQuestions };
+}
+
+function gradeQ2(){
+  const subs = [
+    { id:'2A', label:'Coordinates of N', input:'q2n', correct:{x:2, y:8} },
+    { id:'2B', label:'Coordinates of P', input:'q2p', correct:{x:0, y:6} },
+    { id:'2C', label:'Coordinates of Q', input:'q2q', correct:{x:6, y:0} },
+    { id:'2D', label:'Coordinates of R', input:'q2r', correct:{x:8, y:5} }
+  ];
+  let earned = 0;
+  const subQuestions = [];
+  subs.forEach(sub => {
+    const s = gs(sub.input);
+    const c = parseCoords(s);
+    const ok = c && c.x === sub.correct.x && c.y === sub.correct.y;
+    if (ok) earned++;
+    subQuestions.push({ id: sub.id, title: sub.label, earned: ok ? 1 : 0, total: 1,
+      student: s || '(blank)',
+      correct: '(' + sub.correct.x + ', ' + sub.correct.y + ')' });
+  });
+  return { earned, total: 4, subQuestions };
+}
+
+function gradeQ3(){
+  const d = gridData.q3;
+  const subQuestions = [];
+  let earned = 0;
+  d.targets.forEach((t, i) => {
+    const p = d.studentPoints[i];
+    const ok = p && p.x === t.x && p.y === t.y;
+    if (ok) earned++;
+    subQuestions.push({
+      id: '3' + String.fromCharCode(65 + i),
+      title: 'Plot point ' + t.label,
+      earned: ok ? 1 : 0, total: 1,
+      student: p ? ('(' + p.x + ', ' + p.y + ')') : '(not plotted)',
+      correct: '(' + t.x + ', ' + t.y + ')'
+    });
+  });
+  return { earned, total: 4, subQuestions };
+}
+
+// Helper: grade each plotted point (1pt each) PLUS the shape name (1pt).
+// Produces sub-questions so the student can see per-point feedback.
+function gradePlotsPlusShape(graphId, qNum, correctShapes){
+  const d = gridData[graphId];
+  const subQuestions = [];
+  let earned = 0;
+  // Grade each target point against the corresponding student plot
+  d.targets.forEach((t, i) => {
+    const p = d.studentPoints[i];
+    const ok = p && p.x === t.x && p.y === t.y;
+    if (ok) earned++;
+    subQuestions.push({
+      id: qNum + String.fromCharCode(65 + i),  // e.g. 4A, 4B...
+      title: 'Plot point ' + t.label,
+      earned: ok ? 1 : 0, total: 1,
+      student: p ? ('(' + p.x + ', ' + p.y + ')') : '(not plotted)',
+      correct: '(' + t.x + ', ' + t.y + ')'
+    });
+  });
+  // Grade shape name
+  const raw = gs(graphId + '-shape');
+  const normalized = normShape(raw);
+  const shapeOk = correctShapes.some(c => normalized === normShape(c));
+  if (shapeOk) earned++;
+  subQuestions.push({
+    id: qNum + String.fromCharCode(65 + d.targets.length),
+    title: 'Name the shape',
+    earned: shapeOk ? 1 : 0, total: 1,
+    student: raw || '(blank)',
+    correct: correctShapes[0]
+  });
+  return { earned, total: subQuestions.length, subQuestions };
+}
+
+function gradeQ4(){
+  return gradePlotsPlusShape('q4', '4',
+    ['triangle', 'right triangle', 'scalene triangle', 'right-angled triangle']);
+}
+function gradeQ5(){
+  return gradePlotsPlusShape('q5', '5',
+    ['rectangle', 'rectangular']);
+}
+function gradeQ6(){
+  // (4,9),(2,12),(8,12),(10,9): opposite sides parallel -> parallelogram
+  return gradePlotsPlusShape('q6', '6',
+    ['parallelogram', 'trapezoid', 'trapezium']);
+}
+function gradeQ7(){
+  return gradePlotsPlusShape('q7', '7',
+    ['trapezoid', 'trapezium', 'right trapezoid', 'right trapezium']);
+}
+function gradeQ8(){
+  // All sides equal + right angles -> square
+  return gradePlotsPlusShape('q8', '8',
+    ['square']);
+}
+
+function gradeQ9(){
+  const s = gs('q9-answer');
+  const c = parseCoords(s);
+  const ok = c && c.x === 10 && c.y === 2;
+  return {
+    earned: ok ? 1 : 0, total: 1,
+    student: s || '(blank)',
+    correct: '(10, 2)'
+  };
+}
+
+function gradeQ10(){
+  const d = gridData.q10;
+  const subQuestions = [];
+  let earned = 0;
+  // Grade each plotted point
+  d.targets.forEach((t, i) => {
+    const p = d.studentPoints[i];
+    const ok = p && p.x === t.x && p.y === t.y;
+    if (ok) earned++;
+    subQuestions.push({
+      id: '10' + String.fromCharCode(65 + i),
+      title: 'Plot point ' + t.label,
+      earned: ok ? 1 : 0, total: 1,
+      student: p ? ('(' + p.x + ', ' + p.y + ')') : '(not plotted)',
+      correct: '(' + t.x + ', ' + t.y + ')'
+    });
+  });
+  // Grade yes/no answer
+  const ans = getRadio('q10');
+  const ansOk = ans === 'yes';
+  if (ansOk) earned++;
+  subQuestions.push({
+    id: '10' + String.fromCharCode(65 + d.targets.length),
+    title: 'Do all points lie on a straight line?',
+    earned: ansOk ? 1 : 0, total: 1,
+    student: ans ? (ans === 'yes' ? 'Yes' : 'No') : '(none selected)',
+    correct: 'Yes'
+  });
+  return { earned, total: subQuestions.length, subQuestions };
+}
+
+// =======================================================
+// VALIDATION
+// =======================================================
+function validateRequired(){
+  const missing = [];
+  const markMissing = (id) => {
+    const el = document.getElementById(id);
+    if (el){ el.classList.add('required-missing'); missing.push(el); }
+  };
+  document.querySelectorAll('.required-missing').forEach(el => el.classList.remove('required-missing'));
+
+  // Q1 blanks
+  ['q1a','q1b','q1c','q1d'].forEach(id => { if (!gs(id)) markMissing(id); });
+  // Q2 blanks
+  ['q2n','q2p','q2q','q2r'].forEach(id => { if (!gs(id)) markMissing(id); });
+  // All interactive graphs must have every target plotted before submit
+  ['q3','q4','q5','q6','q7','q8','q10'].forEach(gid => {
+    const gd = gridData[gid];
+    if (gd.studentPoints.length < gd.targets.length){
+      const canvas = document.getElementById('canvas-' + gid);
+      if (canvas) missing.push(canvas);
+      const p = document.getElementById('prompt-' + gid);
+      if (p) p.style.outline = '2px solid #ef4444';
+    }
+  });
+  // Q4-Q8 shape inputs
+  ['q4','q5','q6','q7','q8'].forEach(id => { if (!gs(id + '-shape')) markMissing(id + '-shape'); });
+  // Q9 text
+  if (!gs('q9-answer')) markMissing('q9-answer');
+  // Q10 radio
+  if (!getRadio('q10')){
+    document.querySelectorAll('input[name=q10]').forEach(r => {
+      r.parentElement.style.borderColor = '#ef4444';
+    });
+    missing.push(document.querySelector('input[name=q10]'));
+  }
+
+  if (missing.length > 0){
+    showValidation('⚠️ Please fill in all required fields and plot all points for Q3 before submitting. ' +
+      missing.length + ' item(s) still need your attention.');
+    missing[0].scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+  hideValidation();
+  return true;
+}
+
+function showValidation(msg){
+  const v = document.getElementById('validation-message');
+  v.textContent = msg;
+  v.classList.add('show');
+}
+function hideValidation(){
+  document.getElementById('validation-message').classList.remove('show');
+}
+
+// =======================================================
+// SUBMIT / TRY AGAIN / LOCK
+// =======================================================
+function submitAll(){
+  if (!validateRequired()) return;
+
+  const results = {
+    q1: gradeQ1(), q2: gradeQ2(), q3: gradeQ3(),
+    q4: gradeQ4(), q5: gradeQ5(), q6: gradeQ6(), q7: gradeQ7(), q8: gradeQ8(),
+    q9: gradeQ9(), q10: gradeQ10()
+  };
+  const work = {};
+  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'].forEach(k => {
+    work[k] = getWorkSummary('work-' + k);
+  });
+
+  // Capture graph images for PDF
+  const graphImages = {};
+  ['q3','q4','q5','q6','q7','q8','q9','q10'].forEach(k => {
+    const c = document.getElementById('canvas-' + k);
+    if (c) graphImages[k] = c.toDataURL('image/png');
+  });
+
+  let earned = 0, total = 0;
+  Object.values(results).forEach(r => { earned += r.earned; total += r.total; });
+  const pct = total > 0 ? earned / total : 0;
+
+  lastGradeResults = { results, work, graphImages, earned, total, pct };
+
+  buildResultsHTML(results, earned, total, pct);
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('try-again-btn').style.display = 'inline-block';
+  lockInputs(true);
+  document.getElementById('results-section').scrollIntoView({ behavior:'smooth', block:'start' });
+  if (pct >= 0.8) showCelebration();
+}
+
+function tryAgain(){
+  lockInputs(false);
+  hideValidation();
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('submit-btn').style.display = 'inline-block';
+  document.getElementById('try-again-btn').style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function lockInputs(locked){
+  isLocked = locked;
+  document.querySelectorAll('input, textarea').forEach(el => el.disabled = locked);
+  document.querySelectorAll('.graph-wrap canvas').forEach(el => {
+    el.classList.toggle('locked', locked);
+  });
+  document.querySelectorAll('.graph-actions button').forEach(el => el.disabled = locked);
+}
+
+function buildResultsHTML(results, earned, total, pct){
+  const pctStr = Math.round(pct * 100) + '%';
+  document.getElementById('final-score').textContent = earned + ' / ' + total;
+  document.getElementById('final-pct').textContent = pctStr + '  (' + (pct >= 0.8 ? 'great work! 🌟' : pct >= 0.6 ? 'keep trying!' : 'review and try again') + ')';
+
+  const titles = {
+    q1:'Question 1 — Point M Blanks', q2:'Question 2 — Coordinates of N, P, Q, R',
+    q3:'Question 3 — Plot W, X, Y, Z',
+    q4:'Question 4 — Plot Points and Name Shape',
+    q5:'Question 5 — Plot Points and Name Shape',
+    q6:'Question 6 — Plot Points and Name Shape',
+    q7:'Question 7 — Plot Points and Name Shape',
+    q8:'Question 8 — Plot Points and Name Shape',
+    q9:'Question 9 — Fourth Vertex',
+    q10:'Question 10 — Plot Points and Collinearity'
+  };
+
+  let html = '';
+  Object.keys(results).forEach(k => {
+    const r = results[k];
+    html += '<div class="result-q-header">' + titles[k] + ' — ' + r.earned + ' / ' + r.total + ' pts</div>';
+    if (r.subQuestions){
+      r.subQuestions.forEach(sub => {
+        const cls = sub.earned === sub.total ? 'r-correct' : 'r-incorrect';
+        const label = sub.earned === sub.total ? 'label-correct' : 'label-incorrect';
+        const txt = sub.earned === sub.total ? 'Correct' : 'Incorrect';
+        html += '<div class="result-item ' + cls + '">';
+        html += '<div style="flex:1"><strong>' + sub.id + ':</strong> ' + sub.title;
+        html += '<br><small>Your answer: ' + escHTML(sub.student) + '</small>';
+        html += '</div>';
+        html += '<div style="text-align:right;min-width:90px"><span class="status-label ' + label + '">' + txt + '</span><div style="margin-top:4px;font-weight:800">' + sub.earned + '/' + sub.total + '</div></div>';
+        html += '</div>';
+      });
+    } else {
+      const cls = r.earned === r.total ? 'r-correct' : 'r-incorrect';
+      const label = r.earned === r.total ? 'label-correct' : 'label-incorrect';
+      const txt = r.earned === r.total ? 'Correct' : 'Incorrect';
+      html += '<div class="result-item ' + cls + '">';
+      html += '<div style="flex:1"><strong>Answer:</strong>';
+      html += '<br><small>Your answer: ' + escHTML(r.student) + '</small>';
+      html += '</div>';
+      html += '<div style="text-align:right;min-width:90px"><span class="status-label ' + label + '">' + txt + '</span><div style="margin-top:4px;font-weight:800">' + r.earned + '/' + r.total + '</div></div>';
+      html += '</div>';
+    }
+  });
+  document.getElementById('results-breakdown').innerHTML = html;
+}
+
+function escHTML(s){
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function showCelebration(){
+  const el = document.createElement('div');
+  el.className = 'celebration';
+  el.textContent = '🎉 🎊 ✨ 🌟';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// =======================================================
+// PDF REPORT
+// =======================================================
+function generatePDF(){
+  if (!lastGradeResults){ alert('Please submit your answers first.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'pt', format:'letter' });
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const L = 48, R = W - 48;
+  const { results, work, graphImages, earned, total, pct } = lastGradeResults;
+
+  // Color helpers
+  function parseHex(hex){
+    hex = hex.replace('#','');
+    return [parseInt(hex.substr(0,2),16), parseInt(hex.substr(2,2),16), parseInt(hex.substr(4,2),16)];
+  }
+  function setFill(hex){ const [r,g,b]=parseHex(hex); doc.setFillColor(r,g,b); }
+  function setText(hex){ const [r,g,b]=parseHex(hex); doc.setTextColor(r,g,b); }
+  function setDraw(hex){ const [r,g,b]=parseHex(hex); doc.setDrawColor(r,g,b); }
+
+  // --- PAGE 1: Summary ---
+  // Title bar
+  setFill('#1e40af'); doc.rect(0, 0, W, 60, 'F');
+  setText('#ffffff'); doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text('Lesson 12.06 Independent Practice — Coordinate Graphs', L, 38);
+
+  let y = 90;
+  setText('#1e40af'); doc.setFontSize(12); doc.setFont('helvetica','bold');
+  doc.text('Score Report', L, y);
+  y += 8;
+  setDraw('#cbd5e1'); doc.setLineWidth(1); doc.line(L, y, R, y);
+  y += 24;
+
+  // Big score box
+  setFill('#f0f9ff'); doc.rect(L, y, R - L, 80, 'F');
+  setDraw('#38bdf8'); doc.setLineWidth(1.5); doc.rect(L, y, R - L, 80);
+  setText('#0c4a6e'); doc.setFont('helvetica','bold'); doc.setFontSize(32);
+  doc.text(earned + ' / ' + total, W/2, y + 36, {align:'center'});
+  setText('#475569'); doc.setFont('helvetica','normal'); doc.setFontSize(11);
+  doc.text('Total Points Earned  (' + Math.round(pct*100) + '%)', W/2, y + 58, {align:'center'});
+  y += 110;
+
+  // Summary table header
+  setFill('#1e293b'); doc.rect(L, y, R - L, 22, 'F');
+  setText('#ffffff'); doc.setFont('helvetica','bold'); doc.setFontSize(10);
+  doc.text('Question', L + 10, y + 15);
+  doc.text('Score', L + 280, y + 15);
+  doc.text('Status', L + 380, y + 15);
+  y += 22;
+
+  const titles = {
+    q1:'Q1 — Point M Blanks', q2:'Q2 — Coordinates N/P/Q/R', q3:'Q3 — Plot W/X/Y/Z',
+    q4:'Q4 — Plot Points and Name Shape',
+    q5:'Q5 — Plot Points and Name Shape',
+    q6:'Q6 — Plot Points and Name Shape',
+    q7:'Q7 — Plot Points and Name Shape',
+    q8:'Q8 — Plot Points and Name Shape',
+    q9:'Q9 — Fourth Vertex',
+    q10:'Q10 — Plot Points and Collinearity'
+  };
+
+  let row = 0;
+  Object.keys(results).forEach(k => {
+    const r = results[k];
+    const full = r.earned === r.total;
+    const partial = r.earned > 0 && !full;
+    setFill(row % 2 === 0 ? '#f8fafc' : '#ffffff');
+    doc.rect(L, y, R - L, 20, 'F');
+    setText('#1e293b'); doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    doc.text(titles[k], L + 10, y + 13);
+    doc.text(r.earned + ' / ' + r.total, L + 280, y + 13);
+    if (full){ setFill('#d4edda'); setText('#155724'); }
+    else if (partial){ setFill('#fff3cd'); setText('#856404'); }
+    else { setFill('#f8d7da'); setText('#721c24'); }
+    doc.roundedRect(L + 378, y + 3, 70, 14, 3, 3, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    const txt = full ? 'CORRECT' : (partial ? 'PARTIAL' : 'INCORRECT');
+    doc.text(txt, L + 378 + 35, y + 13, {align:'center'});
+    y += 20;
+    row++;
+  });
+
+  footerAll();
+
+  // --- PAGE 2+: Detailed breakdown ---
+  doc.addPage();
+  y = 50;
+  setText('#1e40af'); doc.setFont('helvetica','bold'); doc.setFontSize(14);
+  doc.text('Detailed Breakdown', L, y);
+  y += 20;
+
+  Object.keys(results).forEach(k => {
+    const r = results[k];
+    if (y > H - 120){ doc.addPage(); y = 50; }
+    setFill('#1e293b'); doc.rect(L, y, R - L, 20, 'F');
+    setText('#ffffff'); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    doc.text(titles[k] + '  (' + r.earned + '/' + r.total + ')', L + 10, y + 14);
+    y += 26;
+
+    const items = r.subQuestions || [{ id:'', title:'Answer', earned:r.earned, total:r.total, student:r.student, correct:r.correct }];
+    items.forEach(sub => {
+      if (y > H - 60){ doc.addPage(); y = 50; }
+      const full = sub.earned === sub.total;
+      setFill(full ? '#d4edda' : '#f8d7da'); doc.rect(L, y, R - L, 16, 'F');
+      setText(full ? '#155724' : '#721c24'); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+      doc.text((sub.id ? sub.id + ': ' : '') + sub.title, L + 8, y + 11);
+      const statusTxt = full ? 'CORRECT' : 'INCORRECT';
+      doc.text(statusTxt, R - 8, y + 11, {align:'right'});
+      y += 18;
+      setText('#1e293b'); doc.setFont('helvetica','normal'); doc.setFontSize(9);
+      const yourLine = 'Your answer: ' + String(sub.student);
+      const linesA = doc.splitTextToSize(yourLine, R - L - 16);
+      doc.text(linesA, L + 8, y + 10);
+      y += linesA.length * 11 + 2;
+      y += 6;
+    });
+    y += 6;
+  });
+
+  // --- Graph pages: Student's plotted graphs ---
+  const graphQs = [
+    { k:'q3', title:'Q3 — Your Plotted Graph' },
+    { k:'q4', title:'Q4 — Your Plotted Graph' },
+    { k:'q5', title:'Q5 — Your Plotted Graph' },
+    { k:'q6', title:'Q6 — Your Plotted Graph' },
+    { k:'q7', title:'Q7 — Your Plotted Graph' },
+    { k:'q8', title:'Q8 — Your Plotted Graph' },
+    { k:'q9', title:'Q9 — Reference Graph (Three Vertices)' },
+    { k:'q10', title:'Q10 — Your Plotted Graph' }
+  ];
+  graphQs.forEach(gq => {
+    if (!graphImages[gq.k]) return;
+    doc.addPage();
+    setText('#1e40af'); doc.setFont('helvetica','bold'); doc.setFontSize(13);
+    doc.text(gq.title, L, 50);
+    setDraw('#cbd5e1'); doc.line(L, 60, R, 60);
+    // Image sized to fit
+    const maxW = R - L, maxH = H - 140;
+    const imgW = Math.min(maxW, 420);
+    const imgH = imgW; // square canvas
+    doc.addImage(graphImages[gq.k], 'PNG', (W - imgW)/2, 80, imgW, imgH);
+  });
+
+  // --- Work pages: typed/drawn work per question ---
+  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'].forEach(k => {
+    const w = work[k];
+    if (!w || !w.hasWork) return;
+    doc.addPage();
+    setText('#1e40af'); doc.setFont('helvetica','bold'); doc.setFontSize(13);
+    doc.text('Work for ' + (titles[k] || k.toUpperCase()), L, 50);
+    setDraw('#cbd5e1'); doc.line(L, 60, R, 60);
+    let wy = 80;
+    if (w.text){
+      setText('#1e293b'); doc.setFont('helvetica','normal'); doc.setFontSize(11);
+      const lines = doc.splitTextToSize(w.text, R - L);
+      doc.text(lines, L, wy);
+      wy += lines.length * 13 + 10;
+    }
+    if (w.imageData){
+      const imgW = R - L, imgH = Math.min(200, H - wy - 60);
+      doc.addImage(w.imageData, 'PNG', L, wy, imgW, imgH);
+    }
+  });
+
+  // Footer on all pages
+  function footerAll(){
+    const pages = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pages; i++){
+      doc.setPage(i);
+      setText('#94a3b8'); doc.setFont('helvetica','normal'); doc.setFontSize(9);
+      const today = new Date().toLocaleDateString();
+      doc.text('Generated ' + today + '  •  Page ' + i + ' of ' + pages, W/2, H - 20, {align:'center'});
+    }
+  }
+  footerAll();
+
+  doc.save('Lesson_12_06_Coordinate_Graphs_Report.pdf');
+}
+
+// =======================================================
+// INIT
+// =======================================================
+let resizeTimer;
+window.addEventListener('load', () => {
+  // Set up all canvases
+  Object.keys(gridData).forEach(id => {
+    const canvas = document.getElementById('canvas-' + id);
+    if (!canvas) return;
+    const d = gridData[id];
+    setupHiDPICanvas(canvas, d.logicalW, d.logicalH);
+    drawCoordGraph(id);
+    updatePromptAndProgress(id);
+    initCanvasEvents(id);
+  });
+
+  // Work areas
+  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'].forEach(k => {
+    makeWorkArea(k + '-work-container', k);
+  });
+
+  // Clear red outline on radio as soon as user clicks one
+  document.querySelectorAll('input[name=q10]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.querySelectorAll('input[name=q10]').forEach(x => {
+        x.parentElement.style.borderColor = '';
+      });
+    });
+  });
+
+  // Clear red border on inputs as soon as user types
+  document.querySelectorAll('input[type=text]').forEach(el => {
+    el.addEventListener('input', () => el.classList.remove('required-missing'));
+  });
+});
+
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    Object.keys(gridData).forEach(id => drawCoordGraph(id));
+  }, 150);
+});
+</script>
+</body>
+</html>
